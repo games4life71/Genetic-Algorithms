@@ -6,13 +6,13 @@ import random
 
 # type 0
 
-
+start_time = time.time()
 def De_Jong(params):
    
    return sum(val**2 for val in params)
   
 def Rastrigin_Function(params):
-    return sum(i**2 - 10*math.cos(2*math.pi*i) for i in params)
+    return 10*len(params) + sum(i**2 - 10*math.cos(2*math.pi*i) for i in params)
 
 def Schwefel_Function(params):
     return sum((-i)*math.sin(math.sqrt(math.abs(i))) for i in params)
@@ -98,11 +98,12 @@ def convert_to_list(sol , a,b,no_of_bits):
 
 def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv -- 0 for best , 1 for first
 
-    best = None 
+ best = None 
     #number of test to be made 
-
+ with open("dejong_res.txt","a") as res :
     for i in range(0, t):
         #local = False
+        print(f'iteration number {i}')
        # vc = np.random.randint(2, size=n*no_of_params)
         vc = []
         for i in range(0,n*no_of_params):
@@ -116,7 +117,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
         #print(param_list)
         #dec_vc = decode(vc, a, b, n)  # real value of the bitstring
         curr_sol = function(param_list)  # value of function(random_gen_sol)
-        print(f'curr_sol is {curr_sol}')
+        #print(f'curr_sol is {curr_sol}')
        # print(i)
 
         neighbours = generate_neighbours(vc)  # hamming's 1 neighbours
@@ -142,13 +143,13 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
             # compare  candidate with best
             elif compare_eval(candidate, best, function,a,b,no_of_bits) == True:
                 best = candidate
+    res.write(f'The best value found for {function} is {str(function(convert_to_list(best,a,b,no_of_bits)))}: ...exec time is  {time.time()-start_time} seconds'+"\n")
     return function(convert_to_list(best,a,b,no_of_bits))
-   # res.write(best)
 precision= 2
 n = math.trunc(math.log2((5.12+5.12)*pow(10,precision))) #number of bits required
 #print(f'n is {n}')
 
 
-print(hill_climbing(100000 ,n,-5.12,5.12,De_Jong,0,5))
-
+print(hill_climbing(10000000 ,n,-5.12,5.12,De_Jong,1,5))
+#print(Rastrigin_Function([1,2,3]))
 
