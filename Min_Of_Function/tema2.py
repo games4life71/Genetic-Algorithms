@@ -21,7 +21,7 @@ def Michalewicz_Function(params):
     return sum(math.sin(i)* math.pow(math.sin((j*i**2)/math.pi),2*len(params)) for j,i in enumerate(params))
 
 def decode(solution, a, b, no_of_bits):
-    return (a + binatodeci(solution))*(b-a)/(pow(2, no_of_bits)-1)
+    return (a + binatodeci(solution)*(b-a)/(pow(2, no_of_bits)-1))
 
 def binatodeci(binary):
     return sum(val*(2**idx) for idx, val in enumerate(reversed(binary)))
@@ -114,7 +114,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
 
         for i in range(0,len(vc),no_of_bits):
             param_list.append(decode(vc[i:i+no_of_bits],a,b,no_of_bits))
-        #print(param_list)
+        print(param_list)
         #dec_vc = decode(vc, a, b, n)  # real value of the bitstring
         curr_sol = function(param_list)  # value of function(random_gen_sol)
         #print(f'curr_sol is {curr_sol}')
@@ -150,6 +150,6 @@ n = math.trunc(math.log2((5.12+5.12)*pow(10,precision))) #number of bits require
 #print(f'n is {n}')
 
 
-print(hill_climbing(10000000 ,n,-5.12,5.12,De_Jong,1,5))
+print(hill_climbing(100000 ,n,-5.12,5.12,Rastrigin_Function,0,5))
 #print(Rastrigin_Function([1,2,3]))
 
