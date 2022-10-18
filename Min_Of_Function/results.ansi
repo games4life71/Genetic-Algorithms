@@ -1,0 +1,8 @@
+The best value found for [38;5;4m <function De_Jong at 0x000001AC348AAEF0> [38;5;15m is  [38;5;1m  3.841824900408875 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.04613137245178223 seconds
+
+The best value found for [38;5;4m <function Schwefel_Function at 0x000001AC43B060E0> [38;5;15m is  [38;5;1m  -1252.1247165957782 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.08755278587341309 seconds
+
+The best value found for [38;5;4m <function Michalewicz_Function at 0x000001AC43B06170> [38;5;15m is  [38;5;1m  2.707384504131416e-10 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.1707296371459961 seconds
+
+The best value found for [38;5;4m <function Rastrigin_Function at 0x000001AC43B05750> [38;5;15m is  [38;5;1m  35.13984017426124 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.2119748592376709 seconds
+

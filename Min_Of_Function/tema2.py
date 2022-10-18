@@ -3,7 +3,7 @@ import math
 import numpy as np
 import time
 import random
-
+import colored
 # type 0
 
 start_time = time.time()
@@ -97,11 +97,16 @@ def convert_to_list(sol , a,b,no_of_bits):
             param_list.append(decode(sol[i:i+no_of_bits],a,b,no_of_bits))
     return param_list
 
+
+color_red = colored.fg('red')
+color_white = colored.fg('white')
+color_blue = colored.fg('blue')
+color_orange  = colored.fg('cyan_2')
 def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv -- 0 for best , 1 for first
 
  best = None 
     #number of test to be made 
- with open("dejong_res.txt","a") as res :
+ with open("results.ansi","a") as res :
     for i in range(0, t):
         #local = False
         print(f'iteration number {i}')
@@ -131,7 +136,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
                # print(candidate)
                 pass
             case 1:
-
+                print("small change")
                 candidate = improve_first(neighbours, function, curr_sol,a,b,no_of_bits)
                 pass
         if candidate is not None:
@@ -144,7 +149,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
             # compare  candidate with best
             elif compare_eval(candidate, best, function,a,b,no_of_bits) == True:
                 best = candidate
-    res.write(f'The best value found for {function} is {str(function(convert_to_list(best,a,b,no_of_bits)))} and the number it runned is {t}: ...exec time is  {time.time()-start_time} seconds'+"\n")
+    res.write(f'The best value found for {color_blue} {function} {color_white} is  {color_red}  {str(function(convert_to_list(best,a,b,no_of_bits)))} {color_white} and the number it runned is {color_orange} {t}: {color_white} ...exec time is {color_red} {time.time()-start_time} seconds'+"\n")
     res.write("\n")
     return function(convert_to_list(best,a,b,no_of_bits))
 precision= 2
@@ -167,9 +172,10 @@ IMPROV_BEST = 0
 IMPROV_FIRST = 1
 
 
-print(hill_climbing(100000 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
-print(hill_climbing(100000 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
-print(hill_climbing(100000 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
-print(hill_climbing(100000 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
+
 #print(Rastrigin_Function([1,2,3]))
 

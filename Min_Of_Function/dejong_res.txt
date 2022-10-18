@@ -1,0 +1,24 @@
+The best value found for <function De_Jong at 0x000002639429AEF0> is +[38;5;1m5.305882992635655 and the number it runned is 100: ...exec time is  0.06811094284057617 seconds
+
+The best value found for <function Schwefel_Function at 0x00000263A45060E0> is +[38;5;1m-1516.2363692860554 and the number it runned is 100: ...exec time is  0.13654017448425293 seconds
+
+The best value found for <function Michalewicz_Function at 0x00000263A4506170> is +[38;5;1m1.2057800032468883e-11 and the number it runned is 100: ...exec time is  0.21973538398742676 seconds
+
+The best value found for <function Rastrigin_Function at 0x00000263A4505750> is +[38;5;1m32.11241567100184 and the number it runned is 100: ...exec time is  0.276477575302124 seconds
+
+The best value found for <function De_Jong at 0x0000018E35A7AEF0> is +[38;5;1m+7.560083578381486 and the number it runned is 100: ...exec time is  0.05635690689086914 seconds
+
+The best value found for <function Schwefel_Function at 0x0000018E44CB60E0> is +[38;5;1m+-1058.7709302154183 and the number it runned is 100: ...exec time is  0.12241721153259277 seconds
+
+The best value found for <function Michalewicz_Function at 0x0000018E44CB6170> is +[38;5;1m+3.03493356023565e-06 and the number it runned is 100: ...exec time is  0.22952032089233398 seconds
+
+The best value found for <function Rastrigin_Function at 0x0000018E44CB5750> is +[38;5;1m+19.158253833613074 and the number it runned is 100: ...exec time is  0.29422926902770996 seconds
+
+The best value found for <function De_Jong at 0x000001AC06C2AEF0> is  [38;5;1m     2.4054207934992715 and the number it runned is 100: ...exec time is  0.05239415168762207 seconds
+
+The best value found for <function Schwefel_Function at 0x000001AC15E060E0> is  [38;5;1m     -920.637467296523 and the number it runned is 100: ...exec time is  0.11247706413269043 seconds
+
+The best value found for <function Michalewicz_Function at 0x000001AC15E06170> is  [38;5;1m     7.874276982755533e-09 and the number it runned is 100: ...exec time is  0.19802355766296387 seconds
+
+The best value found for <function Rastrigin_Function at 0x000001AC15E05750> is  [38;5;1m     46.57854542169432 and the number it runned is 100: ...exec time is  0.256314754486084 seconds
+
