@@ -150,7 +150,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
             # compare  candidate with best
             elif compare_eval(candidate, best, function,a,b,no_of_bits) == True:
                 best = candidate
-    res.write(f'Function :{color_blue} {function}  {color_white}  \n  -best_value:  {color_red} {str(function(convert_to_list(best,a,b,no_of_bits)))} {color_white}: \n  number of tests : {color_orange} {t}: {color_white} \n -exec time : {color_red} {time.time()-start_time} seconds'+"\n")
+    res.write(f'Function :{color_blue} {function}  {color_white}  \n  -best_value:  {color_red} {str(function(convert_to_list(best,a,b,no_of_bits)))} \n {color_white} -improv {color_red} {improv}  \n {color_white} number of tests : {color_orange} {t}: {color_white}  \n -exec time : {color_red} {time.time()-start_time} seconds'+"\n")
     res.write("\n")
     return function(convert_to_list(best,a,b,no_of_bits))
 precision= 2
@@ -173,10 +173,10 @@ IMPROV_BEST = 0
 IMPROV_FIRST = 1
 
 
-#print(hill_climbing(100 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
-#print(hill_climbing(100 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
-#print(hill_climbing(100 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
-print(hill_climbing(100000 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
+# print(hill_climbing(100000 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
+# print(hill_climbing(100000 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
+# print(hill_climbing(100000 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
 
 #print(Rastrigin_Function([1,2,3]))
 

@@ -28,3 +28,20 @@ Function :[38;5;4m <function Rastrigin_Function at 0x000001916D8B5750>  [38;5;
   number of tests : [38;5;50m 100000: [38;5;15m 
  -exec time : [38;5;1m 33.62728929519653 seconds
 
+Function :[38;5;4m <function Rastrigin_Function at 0x0000013225635750>  [38;5;15m  
+  -best_value:  [38;5;1m 0.009938192151459191 [38;5;15m: 
+  number of tests : [38;5;50m 100000: [38;5;15m 
+ -exec time : [38;5;1m 17.65988802909851 seconds
+
+Function :[38;5;4m <function De_Jong at 0x0000018EF2EBAEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 6.348117613176512 
+ [38;5;15m -improv [38;5;1m 1  
+  number of tests : [38;5;50m 100: [38;5;15m  
+ -exec time : [38;5;1m 0.02268218994140625 seconds
+
+Function :[38;5;4m <function De_Jong at 0x0000013A9D58AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 2.334281918226825 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 100: [38;5;15m  
+ -exec time : [38;5;1m 0.026499271392822266 seconds
+
