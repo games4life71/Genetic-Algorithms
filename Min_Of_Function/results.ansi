@@ -1,8 +1,30 @@
-The best value found for [38;5;4m <function De_Jong at 0x000001AC348AAEF0> [38;5;15m is  [38;5;1m  3.841824900408875 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.04613137245178223 seconds
+Function :[38;5;4m <function De_Jong at 0x000002188742AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 4.4720552179633835 [38;5;15m: 
+  number of tests : [38;5;50m 100: [38;5;15m 
+ -exec time : [38;5;1m 0.040639638900756836 seconds
 
-The best value found for [38;5;4m <function Schwefel_Function at 0x000001AC43B060E0> [38;5;15m is  [38;5;1m  -1252.1247165957782 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.08755278587341309 seconds
+Function :[38;5;4m <function Schwefel_Function at 0x00000218966060E0>  [38;5;15m  
+  -best_value:  [38;5;1m -1102.5637381588704 [38;5;15m: 
+  number of tests : [38;5;50m 100: [38;5;15m 
+ -exec time : [38;5;1m 0.07864022254943848 seconds
 
-The best value found for [38;5;4m <function Michalewicz_Function at 0x000001AC43B06170> [38;5;15m is  [38;5;1m  2.707384504131416e-10 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.1707296371459961 seconds
+Function :[38;5;4m <function Michalewicz_Function at 0x0000021896606170>  [38;5;15m  
+  -best_value:  [38;5;1m 6.446401316872377e-09 [38;5;15m: 
+  number of tests : [38;5;50m 100: [38;5;15m 
+ -exec time : [38;5;1m 0.15264081954956055 seconds
 
-The best value found for [38;5;4m <function Rastrigin_Function at 0x000001AC43B05750> [38;5;15m is  [38;5;1m  35.13984017426124 [38;5;15m and the number it runned is [38;5;50m 100: [38;5;15m ...exec time is [38;5;1m 0.2119748592376709 seconds
+Function :[38;5;4m <function Rastrigin_Function at 0x0000021896605750>  [38;5;15m  
+  -best_value:  [38;5;1m 44.39325995474751 [38;5;15m: 
+  number of tests : [38;5;50m 100: [38;5;15m 
+ -exec time : [38;5;1m 0.19564056396484375 seconds
+
+Function :[38;5;4m <function Rastrigin_Function at 0x000001832C715750>  [38;5;15m  
+  -best_value:  [38;5;1m 8.094357025505602 [38;5;15m: 
+  number of tests : [38;5;50m 100000: [38;5;15m 
+ -exec time : [38;5;1m 33.94951939582825 seconds
+
+Function :[38;5;4m <function Rastrigin_Function at 0x000001916D8B5750>  [38;5;15m  
+  -best_value:  [38;5;1m 6.8482359818083225 [38;5;15m: 
+  number of tests : [38;5;50m 100000: [38;5;15m 
+ -exec time : [38;5;1m 33.62728929519653 seconds
 
