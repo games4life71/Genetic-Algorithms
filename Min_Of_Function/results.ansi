@@ -1,47 +1,42 @@
-Function :[38;5;4m <function De_Jong at 0x000002188742AEF0>  [38;5;15m  
-  -best_value:  [38;5;1m 4.4720552179633835 [38;5;15m: 
-  number of tests : [38;5;50m 100: [38;5;15m 
- -exec time : [38;5;1m 0.040639638900756836 seconds
-
-Function :[38;5;4m <function Schwefel_Function at 0x00000218966060E0>  [38;5;15m  
-  -best_value:  [38;5;1m -1102.5637381588704 [38;5;15m: 
-  number of tests : [38;5;50m 100: [38;5;15m 
- -exec time : [38;5;1m 0.07864022254943848 seconds
-
-Function :[38;5;4m <function Michalewicz_Function at 0x0000021896606170>  [38;5;15m  
-  -best_value:  [38;5;1m 6.446401316872377e-09 [38;5;15m: 
-  number of tests : [38;5;50m 100: [38;5;15m 
- -exec time : [38;5;1m 0.15264081954956055 seconds
-
-Function :[38;5;4m <function Rastrigin_Function at 0x0000021896605750>  [38;5;15m  
-  -best_value:  [38;5;1m 44.39325995474751 [38;5;15m: 
-  number of tests : [38;5;50m 100: [38;5;15m 
- -exec time : [38;5;1m 0.19564056396484375 seconds
-
-Function :[38;5;4m <function Rastrigin_Function at 0x000001832C715750>  [38;5;15m  
-  -best_value:  [38;5;1m 8.094357025505602 [38;5;15m: 
-  number of tests : [38;5;50m 100000: [38;5;15m 
- -exec time : [38;5;1m 33.94951939582825 seconds
-
-Function :[38;5;4m <function Rastrigin_Function at 0x000001916D8B5750>  [38;5;15m  
-  -best_value:  [38;5;1m 6.8482359818083225 [38;5;15m: 
-  number of tests : [38;5;50m 100000: [38;5;15m 
- -exec time : [38;5;1m 33.62728929519653 seconds
-
-Function :[38;5;4m <function Rastrigin_Function at 0x0000013225635750>  [38;5;15m  
-  -best_value:  [38;5;1m 0.009938192151459191 [38;5;15m: 
-  number of tests : [38;5;50m 100000: [38;5;15m 
- -exec time : [38;5;1m 17.65988802909851 seconds
-
-Function :[38;5;4m <function De_Jong at 0x0000018EF2EBAEF0>  [38;5;15m  
-  -best_value:  [38;5;1m 6.348117613176512 
- [38;5;15m -improv [38;5;1m 1  
-  number of tests : [38;5;50m 100: [38;5;15m  
- -exec time : [38;5;1m 0.02268218994140625 seconds
-
-Function :[38;5;4m <function De_Jong at 0x0000013A9D58AEF0>  [38;5;15m  
-  -best_value:  [38;5;1m 2.334281918226825 
+Function :[38;5;4m <function De_Jong at 0x00000192D1E7AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 9.813482599335522 
  [38;5;15m -improv [38;5;1m 1  
  [38;5;15m number of tests : [38;5;50m 100: [38;5;15m  
- -exec time : [38;5;1m 0.026499271392822266 seconds
+ -exec time : [38;5;1m 0.0280001163482666 seconds
+
+Function :[38;5;4m <function De_Jong at 0x0000021DBBE2AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 3.2664786109943207 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 100: [38;5;15m  
+ -exec time : [38;5;1m 0.04300069808959961 seconds
+
+Function :[38;5;4m <function De_Jong at 0x000002C1440AAEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 6.5514588111021546 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 100: [38;5;15m  
+ -exec time : [38;5;1m 0.042000532150268555 seconds
+
+Function :[38;5;4m <function De_Jong at 0x00000202A987AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 6.202371155892338 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 100: [38;5;15m  
+ -exec time : [38;5;1m 0.038001298904418945 seconds
+
+Function :[38;5;4m <function Schwefel_Function at 0x00000202B8A860E0>  [38;5;15m  
+  -best_value:  [38;5;1m -1628.5708553765337 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000: [38;5;15m  
+ -exec time : [38;5;1m 0.6924889087677002 seconds
+
+Function :[38;5;4m <function Michalewicz_Function at 0x00000202B8A86170>  [38;5;15m  
+  -best_value:  [38;5;1m 2.9927473937733945e-14 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000: [38;5;15m  
+ -exec time : [38;5;1m 1.88950777053833 seconds
+
+Function :[38;5;4m <function Rastrigin_Function at 0x00000202B8A85750>  [38;5;15m  
+  -best_value:  [38;5;1m 21.89953059418918 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000: [38;5;15m  
+ -exec time : [38;5;1m 2.3575103282928467 seconds
 

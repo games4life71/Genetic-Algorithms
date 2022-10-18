@@ -113,7 +113,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
         print(f'iteration number {i}')
        # vc = np.random.randint(2, size=n*no_of_params)
         vc = []
-        for i in range(0,n*no_of_params):
+        for i in range(0,no_of_bits*no_of_params):
             vc.append(random.randint(0,1))            
        # print(vc)
         #convert to real value 
@@ -153,8 +153,9 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
     res.write(f'Function :{color_blue} {function}  {color_white}  \n  -best_value:  {color_red} {str(function(convert_to_list(best,a,b,no_of_bits)))} \n {color_white} -improv {color_red} {improv}  \n {color_white} number of tests : {color_orange} {t}: {color_white}  \n -exec time : {color_red} {time.time()-start_time} seconds'+"\n")
     res.write("\n")
     return function(convert_to_list(best,a,b,no_of_bits))
-precision= 2
-n = math.trunc(math.log2((5.12+5.12)*pow(10,precision))) #number of bits required
+
+
+precision= 5
 #print(f'n is {n}')
 
 
@@ -167,16 +168,21 @@ PARAMS_5 = 5
 PARAMS_10 = 10
 PARAMS_30 = 30
 
-
+N_DEJON = math.trunc(math.log2((DEJON_INTERV[1]- DEJON_INTERV[0])*pow(10,precision))) #number of bits required
+N_RAS = math.trunc(math.log2((RASTRING_INTERV[1]-RASTRING_INTERV[0])*pow(10,precision)))
+N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(10,precision)))
+N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,precision)))
 
 IMPROV_BEST = 0
 IMPROV_FIRST = 1
 
 
-print(hill_climbing(100 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
-# print(hill_climbing(100000 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
-# print(hill_climbing(100000 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
-# print(hill_climbing(100000 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(1000000 ,N_DEJON,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(1000000 ,N_SCHWEL,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(1000000 ,N_MICH,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5)) 
+print(hill_climbing(1000000 ,N_RAS,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
 
-#print(Rastrigin_Function([1,2,3]))
-
+print(hill_climbing(1000000 ,N_DEJON,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_BEST,PARAMS_5))
+print(hill_climbing(1000000 ,N_SCHWEL,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_BEST,PARAMS_5))
+print(hill_climbing(1000000 ,N_MICH,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_BEST,PARAMS_5)) 
+print(hill_climbing(1000000 ,N_RAS,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_BEST,PARAMS_5))
