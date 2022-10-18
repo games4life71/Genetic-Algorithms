@@ -15,7 +15,7 @@ def Rastrigin_Function(params):
     return 10*len(params) + sum(i**2 - 10*math.cos(2*math.pi*i) for i in params)
 
 def Schwefel_Function(params):
-    return sum((-i)*math.sin(math.sqrt(math.abs(i))) for i in params)
+    return sum((-i)*math.sin(math.sqrt(abs(i))) for i in params)
 
 def Michalewicz_Function(params):
     return sum(math.sin(i)* math.pow(math.sin((j*i**2)/math.pi),2*len(params)) for j,i in enumerate(params))
@@ -90,6 +90,7 @@ def compare_eval(sol1, sol2, function,a,b,no_of_bits):
     if function(convert_to_list(sol1,a,b,no_of_bits)) < function(convert_to_list(sol2,a,b,no_of_bits)):
         return True
 
+
 def convert_to_list(sol , a,b,no_of_bits):
     param_list = []
     for i in range(0,len(sol),no_of_bits):
@@ -114,7 +115,7 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
 
         for i in range(0,len(vc),no_of_bits):
             param_list.append(decode(vc[i:i+no_of_bits],a,b,no_of_bits))
-        print(param_list)
+        #`print(param_list)
         #dec_vc = decode(vc, a, b, n)  # real value of the bitstring
         curr_sol = function(param_list)  # value of function(random_gen_sol)
         #print(f'curr_sol is {curr_sol}')
@@ -143,13 +144,32 @@ def hill_climbing(t, no_of_bits, a, b, function, improv,no_of_params):  # improv
             # compare  candidate with best
             elif compare_eval(candidate, best, function,a,b,no_of_bits) == True:
                 best = candidate
-    res.write(f'The best value found for {function} is {str(function(convert_to_list(best,a,b,no_of_bits)))}: ...exec time is  {time.time()-start_time} seconds'+"\n")
+    res.write(f'The best value found for {function} is {str(function(convert_to_list(best,a,b,no_of_bits)))} and the number it runned is {t}: ...exec time is  {time.time()-start_time} seconds'+"\n")
+    res.write("\n")
     return function(convert_to_list(best,a,b,no_of_bits))
 precision= 2
 n = math.trunc(math.log2((5.12+5.12)*pow(10,precision))) #number of bits required
 #print(f'n is {n}')
 
 
-print(hill_climbing(100000 ,n,-5.12,5.12,Rastrigin_Function,0,5))
+DEJON_INTERV = (-5.12,5.12)
+RASTRING_INTERV = (-5.12,5.12)
+MICHALEWICZ_INTERV = (0,math.pi)
+SCHWEFEL_INTERV = (-500,500)
+
+PARAMS_5 = 5
+PARAMS_10 = 10
+PARAMS_30 = 30
+
+
+
+IMPROV_BEST = 0
+IMPROV_FIRST = 1
+
+
+print(hill_climbing(100000 ,n,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100000 ,n,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],Schwefel_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100000 ,n,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],Michalewicz_Function,IMPROV_FIRST,PARAMS_5))
+print(hill_climbing(100000 ,n,RASTRING_INTERV[0],RASTRING_INTERV[1],Rastrigin_Function,IMPROV_FIRST,PARAMS_5))
 #print(Rastrigin_Function([1,2,3]))
 
