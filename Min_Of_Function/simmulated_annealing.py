@@ -132,27 +132,32 @@ def simmulated_annealing(t,temp, no_of_bits, a, b, function,no_of_params):  # im
         #print(f'curr_sol is {curr_sol}')
        # print(i)
 
-        neighbours = generate_neighbours(vc)  # hamming's 1 neighbours
+        #neighbours = generate_neighbours(vc)  # hamming's 1 neighbours
         #print(neighbours)
         
         #choose a random neighbour
-        random_nbhd = neighbours[random.randint(0,len(neighbours)-1)]
+        random_nbhd = vc.copy()
+        #select a random bit 
+
+        #print(type(random_nbhd))
        # print(f'type of random neigh is {type(random_nbhd)}')
         candidate = []
         
         
         for i in range(0,t): 
-
+            bit = random.randint(0, len(vc)-1)
+            random_nbhd[bit] = not random_nbhd[bit]
+       
             if compare_eval(random_nbhd,vc,function,a,b,no_of_bits) == True:
+               # print(f'solution is {function(convert_to_list(random_nbhd,a,b,no_of_bits))}\n')        
                 candidate = random_nbhd
                 
-            elif  random.random() < math.exp(-abs(function(convert_to_list(random_nbhd,a,b,no_of_bits)) - curr_sol )/t):
+            elif  random.random() < math.exp(-abs(function(convert_to_list(random_nbhd,a,b,no_of_bits)) - curr_sol )/temp):
                 candidate = random_nbhd
                 
 
         #make a 
-        temp = temp*float("0.1")
-        
+        temp = temp*0.1        
         if candidate is not None:
             
             # if we found a smaller local value , we update
@@ -187,7 +192,7 @@ N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,precision)))
 
 
-simmulated_annealing(10000,10000,N_DEJON,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,PARAMS_5)
+simmulated_annealing(10000,100,N_DEJON,DEJON_INTERV[0],DEJON_INTERV[1],De_Jong,PARAMS_5)
 IMPROV_BEST = 0
 IMPROV_FIRST = 1
 
