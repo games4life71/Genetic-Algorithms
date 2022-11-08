@@ -40,3 +40,51 @@ Function :[38;5;4m <function Rastrigin_Function at 0x00000202B8A85750>  [38;5;
  [38;5;15m number of tests : [38;5;50m 1000: [38;5;15m  
  -exec time : [38;5;1m 2.3575103282928467 seconds
 
+Function :[38;5;4m <function De_Jong at 0x0000013B35F8AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 0.04873411735180257 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 453.90983414649963 seconds
+
+Function :[38;5;4m <function Schwefel_Function at 0x0000013B461760E0>  [38;5;15m  
+  -best_value:  [38;5;1m -2074.3641759406237 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 1046.5337216854095 seconds
+
+Function :[38;5;4m <function Michalewicz_Function at 0x0000013B46176170>  [38;5;15m  
+  -best_value:  [38;5;1m 1.4913082205997736e-31 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 2197.0696754455566 seconds
+
+Function :[38;5;4m <function Rastrigin_Function at 0x0000013B46175750>  [38;5;15m  
+  -best_value:  [38;5;1m 5.738348882142887 
+ [38;5;15m -improv [38;5;1m 1  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 2661.61461687088 seconds
+
+Function :[38;5;4m <function De_Jong at 0x0000013B35F8AEF0>  [38;5;15m  
+  -best_value:  [38;5;1m 0.2528628264907281 
+ [38;5;15m -improv [38;5;1m 0  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 6184.217693328857 seconds
+
+Function :[38;5;4m <function Schwefel_Function at 0x0000013B461760E0>  [38;5;15m  
+  -best_value:  [38;5;1m -1854.4798050245163 
+ [38;5;15m -improv [38;5;1m 0  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 12461.569783449173 seconds
+
+Function :[38;5;4m <function Michalewicz_Function at 0x0000013B46176170>  [38;5;15m  
+  -best_value:  [38;5;1m 1.5627276949601163e-23 
+ [38;5;15m -improv [38;5;1m 0  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 15941.894587993622 seconds
+
+Function :[38;5;4m <function Rastrigin_Function at 0x0000013B46175750>  [38;5;15m  
+  -best_value:  [38;5;1m 5.526498912178845 
+ [38;5;15m -improv [38;5;1m 0  
+ [38;5;15m number of tests : [38;5;50m 1000000: [38;5;15m  
+ -exec time : [38;5;1m 19588.216501235962 seconds
+
