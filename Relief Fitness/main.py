@@ -10,23 +10,24 @@ import math
 
 # generating the starting 
 DEJON_INTERV = (-5.12,5.12)
-POPULATION_SIZE = 5
+#a nu se pune populatie impara 
+POPULATION_SIZE = 6
 PRECISION = 5
 N_DEJON = math.trunc(math.log2((DEJON_INTERV[1]- DEJON_INTERV[0])*pow(10,PRECISION))) #number of bits required
 MUTATION_RATE  = 0.9
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-
+CROSSOVER_RATE = 0.25
 def De_Jong(params):
    return sum(val**2 for val in params)
 
-@jit(parallel = True)
+#@jit(parallel = True)
 def generate_chromosome(func_params, bit_count):
     # using unsigned ints to optimize memory
     chromosome = np.random.randint(0, 2, func_params*bit_count, np.uint8)
     return chromosome
 
 
-@jit(parallel=True)
+#@jit(parallel=True)
 def generate_starting_pop(func_params, bit_count):
     population = []
     for i in range(0, POPULATION_SIZE):
@@ -37,21 +38,42 @@ def generate_starting_pop(func_params, bit_count):
 
 
 def print_population(population):
-    for line, entry in enumerate(population):
-        print(entry, end='\n')
+    for  entry in population:
+        print(entry)
 
 
-def cross_over(chrom1: list, chrom2: list, funct_params: int, bit_count: int):
-    position = np.random.randint(0, funct_params*bit_count)
+def cross_over( funct_params: int, bit_count: int,new_gen:list):
+    
+
     # cross over after random  position
-    print(f'position is {position}')
+    
+    new_pop = []    
+    for i in range(0,POPULATION_SIZE,2):
+        #creating pop_size/2 parents and mating them
+        chrom1= new_gen[np.random.randint(1,POPULATION_SIZE)]
+        chrom2 = new_gen[np.random.randint(1,POPULATION_SIZE)]
+
+        #generate a random probabillity to cross over 
+        
+        if np.random.random() < CROSSOVER_RATE:
+            position = np.random.randint(0, funct_params*bit_count)
+            chrom1_cross = np.concatenate((chrom1[0:position],chrom2[position:chrom2.__len__()]))
+            chrom2_cross = np.concatenate((chrom2[0:position],chrom1[position:chrom1.__len__()]))
+            new_pop.append(chrom1_cross)
+            new_pop.append(chrom2_cross)
+            
+        else:
+            new_pop.append(chrom1)
+            new_pop.append(chrom2)
+
+    #print(f'position is {position}')
     # 10|110  11|1001
-    chrom1_cross = chrom1[0:position]+chrom2[position:chrom2.__len__()]
-    chrom2_cross = chrom2[0:position]+chrom1[position:chrom1.__len__()]
-    return (chrom1_cross, chrom2_cross)
+
+    return new_pop
+
 
 #mutate with a proability 
-@jit(parallel = True)
+#@jit(parallel = True)
 def mutate_gene(population,funct_params, bit_count):
     for i in range (0,NUMBER_OF_MUTATION):
         #generate a number between 1 and number of total genes 
@@ -118,19 +140,25 @@ def select_chromosome(pop_cumul:list,population):
     return new_gen
     
 
-    
+
 if __name__ == "__main__":
-    start_population = generate_starting_pop(2,N_DEJON)
-    print_population(f'start pop is {start_population}')
+    start_population = generate_starting_pop(2,5)
+    #print(f'start pop is {start_population}')
+    print_population(start_population)
     eval_fit = evaluate_fitness(start_population,2,De_Jong)
     new_gen = select_chromosome(eval_fit[1],start_population)
+    #print(f'the new gen is {new_gen}')
+    print('\n')
     print_population(new_gen)
+    new_pop = cross_over(5,2,new_gen)
+    print('\n')
+    print_population(new_pop)
     # print(mutate_gene(start_population,3,3))
     # print_population(start_population)
-
+    
     # print(cross_over(start_population[0].tolist(),
-    #       start_population[1].tolist(), 2, 2))
-    #print(mutate_gene(start_population[0].tolist(),2,2))
+    #        start_population[1].tolist(), 2, 2))
+    # #print(mutate_gene(start_population[0].tolist(),2,2))
     # fitness_info= De_Jong_Fitness(start_population,2)
     # new_gen =select_chromosome(fitness_info[1],start_population)
     # print_population(new_gen)
