@@ -14,7 +14,6 @@ RASTRING_INTERV = (-5.12,5.12)
 MICHALEWICZ_INTERV = (0,math.pi)
 SCHWEFEL_INTERV = (-500,500)
 #a nu se pune populatie impara 
-POPULATION_SIZE = 100
 PRECISION = 5
 
 N_DEJON = math.trunc(math.log2((DEJON_INTERV[1]- DEJON_INTERV[0])*pow(10,PRECISION))) #number of bits required
@@ -22,10 +21,11 @@ N_RAS = math.trunc(math.log2((RASTRING_INTERV[1]-RASTRING_INTERV[0])*pow(10,PREC
 N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(10,PRECISION)))
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
 
-MUTATION_RATE  = 0.1
+MUTATION_RATE  = 0.04
+CROSSOVER_RATE = 0.5
+POPULATION_SIZE = 200
+NO_GENERATIONS = 1000
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-CROSSOVER_RATE = 0.25
-
 
 def De_Jong(params):
    return sum(val**2 for val in params)
@@ -77,9 +77,9 @@ def cross_over( funct_params: int, bit_count: int,new_gen:list):
         #generate a random probabillity to cross over 
         
         if np.random.random() < CROSSOVER_RATE:
-            position = np.random.randint(0, funct_params*bit_count)
-            chrom1_cross = np.concatenate((chrom1[0:position],chrom2[position:chrom2.__len__()]))
-            chrom2_cross = np.concatenate((chrom2[0:position],chrom1[position:chrom1.__len__()]))
+            position = np.random.randint(0, funct_params)
+            chrom1_cross = np.concatenate((chrom1[0:position*bit_count],chrom2[position*bit_count:chrom2.__len__()]))
+            chrom2_cross = np.concatenate((chrom2[0:position*bit_count],chrom1[position*bit_count:chrom1.__len__()]))
             new_pop.append(chrom1_cross)
             new_pop.append(chrom2_cross)
             
@@ -170,7 +170,7 @@ def evaluate_fitness(population,no_of_params,no_of_bits,function_name):
         if i == 0 : 
                 fitness_cumulative.append(fitness_final[i])
         else :
-                fitness_cumulative.append(fitness_cumulative[i-1]+fitness_final[i]) 
+                fitness_cumulative.append(fitness_cumulative[i-1]+fitness_final[i-1]) 
 
      return (fitness_final,fitness_cumulative,value)
 
@@ -183,10 +183,13 @@ def print_fitness(fitness_pop):
 #select using roulette-wheel
 def select_chromosome(pop_cumul:list,population):
     probab = np.random.random(POPULATION_SIZE)
+    # probab = np.random.random()
     new_gen = []
     for i in range(len(probab)):
+    # for i in range(0, POPULATION_SIZE):
         for j in range(len(pop_cumul)): 
-            if probab[i]<pop_cumul[j]:
+            #if probab[i] < pop_cumul[j] :
+             if (probab[i] > pop_cumul[j] and probab[i] < pop_cumul[j+1] ) or probab[i] < pop_cumul[j] :
                 new_gen.append(population[j])
                 break
     return new_gen
@@ -196,7 +199,7 @@ def select_chromosome(pop_cumul:list,population):
 if __name__ == "__main__":
     start_population = generate_starting_pop(5,N_DEJON)
    
-    for i in range(0,1000):
+    for i in range(0,NO_GENERATIONS):
         #print(f'start pop is {start_population}')
         #print("start pop is :",end = '\n')
         #print_population(start_population)
