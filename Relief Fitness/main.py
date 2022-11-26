@@ -15,17 +15,18 @@ MICHALEWICZ_INTERV = (0,math.pi)
 SCHWEFEL_INTERV = (-500,500)
 #a nu se pune populatie impara 
 PRECISION = 5
-
 N_DEJON = math.trunc(math.log2((DEJON_INTERV[1]- DEJON_INTERV[0])*pow(10,PRECISION))) #number of bits required
 N_RAS = math.trunc(math.log2((RASTRING_INTERV[1]-RASTRING_INTERV[0])*pow(10,PRECISION)))
 N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(10,PRECISION)))
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
 
-MUTATION_RATE  = 0.04
-CROSSOVER_RATE = 0.5
-POPULATION_SIZE = 200
+MUTATION_RATE  = 0.2
+CROSSOVER_RATE = 0.3
+POPULATION_SIZE = 100
 NO_GENERATIONS = 1000
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
+ELITISM_RATE = 20
+ELITE_POP_SIZE = math.floor((ELITISM_RATE/100)*POPULATION_SIZE)
 
 def De_Jong(params):
    return sum(val**2 for val in params)
@@ -62,7 +63,7 @@ def print_population(population):
         print(entry)
 
 
-@jit(parallel = True )
+#@jit(parallel = True )
 def cross_over( funct_params: int, bit_count: int,new_gen:list):
     
 
@@ -90,6 +91,8 @@ def cross_over( funct_params: int, bit_count: int,new_gen:list):
     #print(f'position is {position}')
     # 10|110  11|1001
 
+    #copy the elite individuals 
+    #new_pop.extend(elite_pop)
     return new_pop
 
 
@@ -122,7 +125,7 @@ def decode(solution, a, b, no_of_bits)->float:
 
 
 # @jit(fastmath = True)
-def evaluate_fitness(population,no_of_params,no_of_bits,function_name):
+def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
      fitness_population :list = []
     
      #max = None # best chrom
@@ -132,7 +135,7 @@ def evaluate_fitness(population,no_of_params,no_of_bits,function_name):
         match function_name.__name__:
             case 'De_Jong':
                 
-                params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(chrom,no_of_params*no_of_bits))
+                params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],3) for x in  np.split(chrom,no_of_params*no_of_bits))
                 fitness_population.append(1/function_name(params_decode))
                 
 
@@ -159,11 +162,24 @@ def evaluate_fitness(population,no_of_params,no_of_bits,function_name):
      #print(fitness_population.index(max(fitness_population)))
      params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))
      value = De_Jong(params_decode)
-    #  if value < global_minim: 
-    #      global_minim = value 
-     print(f'best result is {value}',end= '\n')
-     fitness_final = []
-     fitness_cumulative = []
+     global_minim = 1000
+     if value < global_minim: 
+       global_minim = value 
+    # print(f'best result is {value}',end= '\n')
+   
+     fitness_final = [] #probability for each chrom to be selected 
+
+
+    #figure out which chormosome are fit to elitism
+     sorted_fitness = sorted(fitness_population,reverse=True)
+     elite_pop = []
+     for i  in range  (0,ELITE_POP_SIZE):
+        #indx = population.index(sorted_fitness)
+        elite_pop.append(population[fitness_population.index(sorted_fitness[i])])
+     
+
+     fitness_cumulative = [] #cumulative probability for roulette wheel 
+
      for i in range(len(fitness_population)):
         fitness_final.append(fitness_population[i]/total)
         #print(f'fitness population[{i}] is {fitness_population[i]}')
@@ -172,7 +188,7 @@ def evaluate_fitness(population,no_of_params,no_of_bits,function_name):
         else :
                 fitness_cumulative.append(fitness_cumulative[i-1]+fitness_final[i-1]) 
 
-     return (fitness_final,fitness_cumulative,value)
+     return (fitness_final,fitness_cumulative,value,elite_pop)
 
 
 def print_fitness(fitness_pop):
@@ -181,45 +197,40 @@ def print_fitness(fitness_pop):
 
 
 #select using roulette-wheel
-def select_chromosome(pop_cumul:list,population):
-    probab = np.random.random(POPULATION_SIZE)
-    # probab = np.random.random()
+def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
+    probab = np.random.random(POPULATION_SIZE-ELITE_POP_SIZE)
+    pop_cumul[POPULATION_SIZE-1] =1
+    #print(f'len of cumul is {len(pop_cumul)} and len of probab is {len(probab)}')
+    #print(f'len cumul is {len(pop_cumul)}')
     new_gen = []
     for i in range(len(probab)):
-    # for i in range(0, POPULATION_SIZE):
         for j in range(len(pop_cumul)): 
-            #if probab[i] < pop_cumul[j] :
-             if (probab[i] > pop_cumul[j] and probab[i] < pop_cumul[j+1] ) or probab[i] < pop_cumul[j] :
+             #print(f'i is {i} j is {j}')
+             if(probab[i] <= pop_cumul[j]):
                 new_gen.append(population[j])
                 break
+            
+       
+    new_gen.extend(elite_pop)
+    #print(f'len new gen is {len(new_gen)}')
     return new_gen
     
 
 
+
+
 if __name__ == "__main__":
     start_population = generate_starting_pop(5,N_DEJON)
-   
+
     for i in range(0,NO_GENERATIONS):
-        #print(f'start pop is {start_population}')
-        #print("start pop is :",end = '\n')
-        #print_population(start_population)
-        params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(start_population[2],5))
-        #print(f'first result is {De_Jong(params_decode)}',end= '\n')
         eval_fit = evaluate_fitness(start_population,5,N_DEJON,De_Jong)
         if  eval_fit[2] < global_minim:
             global_minim = eval_fit[2]
-        #print(eval_fit[1])
-        new_gen = select_chromosome(eval_fit[1],start_population)
-        #print(f'the new gen is {new_gen}')
-        # print('\n')
-        # print_population(new_gen)
-        new_pop = cross_over(5,N_DEJON,new_gen)
-        print('\n')
-       #print_population(new_pop)
-        # params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(new_pop[1],5))
-        # print(f'best result is {De_Jong(params_decode)}',end= '\n')
-        #mutate with a probability 
+        
+        new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
+        new_pop = cross_over(5,N_DEJON,new_gen) 
+
         mutate_gene(new_pop,5,N_DEJON)
-        start_population = new_pop
+        start_population = new_gen
     print(global_minim)
-       
+    
