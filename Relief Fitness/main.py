@@ -25,12 +25,12 @@ N_RAS = math.trunc(math.log2((RASTRING_INTERV[1]-RASTRING_INTERV[0])*pow(10,PREC
 N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(10,PRECISION)))
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
 
-MUTATION_RATE  = 0.2
-CROSSOVER_RATE = 0.4
-POPULATION_SIZE = 200
+MUTATION_RATE  = 0.7
+CROSSOVER_RATE = 0.3
+POPULATION_SIZE = 300
 NO_GENERATIONS = 2000
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-ELITISM_RATE = 25
+ELITISM_RATE = 40
 ELITE_POP_SIZE = math.floor((ELITISM_RATE/100)*POPULATION_SIZE)
 
 def fitnessSchwefel(arr):
@@ -91,7 +91,8 @@ def cross_over( funct_params: int, bit_count: int,new_gen:list,elite_pop):
 
         #generate a random probabillity to cross over 
         
-        if np.random.random() < CROSSOVER_RATE:
+        if np.random.random() < CROSSOVER_RATE :
+
             position = np.random.randint(0, funct_params)
             chrom1_cross = np.concatenate((chrom1[0:position*bit_count],chrom2[position*bit_count:chrom2.__len__()]))
             chrom2_cross = np.concatenate((chrom2[0:position*bit_count],chrom1[position*bit_count:chrom1.__len__()]))
@@ -102,8 +103,7 @@ def cross_over( funct_params: int, bit_count: int,new_gen:list,elite_pop):
             new_pop.append(chrom1)
             new_pop.append(chrom2)
 
-    #print(f'position is {position}')
-    # 10|110  11|1001
+   
 
     #copy the elite individuals 
     new_pop.extend(elite_pop)
@@ -122,8 +122,9 @@ def mutate_gene(population,funct_params, bit_count):
         chrom_indx  = math.floor(val/(funct_params*bit_count))
         gene = population[chrom_indx]
         #print(f'gene is{gene}')
+
         if gene[chromos_indx] == 0 :
-            gene[chromos_indx] =1
+            gene[chromos_indx] = 1
         else : gene[chromos_indx] = 0
 
 
@@ -237,9 +238,11 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
 #if __name__ == "__main__":
 global_minim = 1000
 def ga(function_name):
-
+   
+    global CROSSOVER_RATE
+    global MUTATION_RATE
+    not_found = 0  
     match function_name.__name__:
-
         case 'De_Jong':
             start_population = generate_starting_pop(5,N_DEJON)
 
@@ -251,9 +254,15 @@ def ga(function_name):
                 if  eval_fit[2] < global_minim:
                     global_minim = eval_fit[2]
                     print(f'new minim is {global_minim}')
-                
+                else :
+                    not_found+=1
+
+                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                    CROSSOVER_RATE *= 1.1
+                    MUTATION_RATE *= 0.1
+                    not_found = 0
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
-                new_pop = cross_over(5,N_DEJON,new_gen) 
+                new_pop = cross_over(5,N_DEJON,new_gen,eval_fit[3]) 
 
                 mutate_gene(new_pop,5,N_DEJON)
                 start_population = new_gen
@@ -272,7 +281,13 @@ def ga(function_name):
                 if  eval_fit[2] < global_minim:
                     global_minim = eval_fit[2]
                     print(f'new minim is {global_minim}')
-                
+                else :
+                    not_found+=1
+
+                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                    CROSSOVER_RATE *= 1.1
+                    MUTATION_RATE *= 0.1
+                    not_found = 0
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
                 new_pop = cross_over(5,N_RAS,new_gen,eval_fit[3]) 
 
@@ -293,9 +308,15 @@ def ga(function_name):
                 if  eval_fit[2] < global_minim:
                     global_minim = eval_fit[2]
                     print(f'new minim is {global_minim}')
-                
+                else :
+                    not_found+=1
+
+                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                    CROSSOVER_RATE *= 1.1
+                    MUTATION_RATE *= 0.1
+                    not_found = 0
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
-                new_pop = cross_over(5,N_SCHWEL,new_gen) 
+                new_pop = cross_over(5,N_SCHWEL,new_gen,eval_fit[3]) 
 
                 mutate_gene(new_pop,5,N_SCHWEL)
                 start_population = new_gen
@@ -305,25 +326,34 @@ def ga(function_name):
 
         case 'Michalewicz_Function':
             start_population = generate_starting_pop(5,N_MICH)
+           
 
             global_minim = 1000
-            
+              
             for i in range(0,NO_GENERATIONS):
                 print(f'generation no : {i}',end='\n')
                 eval_fit = evaluate_fitness(start_population,5,N_MICH,function_name)
+               
                 if  eval_fit[2] < global_minim:
                     global_minim = eval_fit[2]
                     print(f'new minim is {global_minim}')
-                
+                else :
+                    not_found+=1
+
+                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                    CROSSOVER_RATE *= 1.1
+                    MUTATION_RATE *= 0.1
+                    not_found = 0
+                    #print("modified!!!!!!")
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
-                new_pop = cross_over(5,N_MICH,new_gen) 
+                new_pop = cross_over(5,N_MICH,new_gen,eval_fit[3]) 
 
                 mutate_gene(new_pop,5,N_MICH)
                 start_population = new_gen
             print(global_minim)
             
 #ga(Rastrigin_Function)
-cProfile.run('ga(Rastrigin_Function)','res_file', sort= True)
+cProfile.run('ga(Schwefel_Function)','res_file', sort= True)
 file = open('formatted_profile.txt', 'w')
 profile = pstats.Stats('./res_file', stream=file)
 profile.sort_stats('time')

@@ -1,0 +1,60 @@
+Sun Nov 27 20:58:44 2022    ./res_file
+
+         73628741 function calls (69283301 primitive calls) in 90.491 seconds
+
+   Ordered by: internal time
+   List reduced from 57 to 50 due to restriction <50>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 34401400   51.672    0.000   51.672    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:132(<genexpr>)
+2174720/364120    6.745    0.000   66.811    0.000 {built-in method builtins.sum}
+     2000    4.635    0.002    4.758    0.002 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:216(select_chromosome)
+  1810600    4.480    0.000   64.322    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:137(decode)
+   362120    3.443    0.000   10.493    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\lib\shape_base.py:739(array_split)
+   839422    2.026    0.000    2.029    0.000 {method 'randint' of 'numpy.random.mtrand.RandomState' objects}
+  1810600    1.479    0.000   59.196    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:131(binatodeci)
+3015504/480664    1.442    0.000   12.283    0.000 {built-in method numpy.core._multiarray_umath.implement_array_function}
+  2172720    1.184    0.000    5.330    0.000 <__array_function__ internals>:177(swapaxes)
+  2172720    1.105    0.000    2.176    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:51(_wrapfunc)
+     2000    1.091    0.001   81.091    0.041 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:142(evaluate_fitness)
+     2000    0.975    0.000    2.032    0.001 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:115(mutate_gene)
+  2160720    0.973    0.000   64.936    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:168(<genexpr>)
+  2172720    0.873    0.000    3.048    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:550(swapaxes)
+  2170720    0.792    0.000    0.792    0.000 {built-in method builtins.pow}
+  2172720    0.777    0.000    0.777    0.000 {method 'swapaxes' of 'numpy.ndarray' objects}
+  2160720    0.761    0.000   65.697    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:41(<genexpr>)
+   362120    0.749    0.000    0.749    0.000 {method 'cumsum' of 'numpy.ndarray' objects}
+     4002    0.678    0.000    0.678    0.000 {built-in method builtins.print}
+   362120    0.598    0.000   11.843    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\lib\shape_base.py:799(split)
+   362120    0.532    0.000    0.532    0.000 {built-in method numpy.array}
+  3851260    0.521    0.000    0.521    0.000 {method 'append' of 'list' objects}
+     2000    0.402    0.000    1.862    0.001 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:81(cross_over)
+  1088240    0.393    0.000    0.393    0.000 {built-in method builtins.len}
+   360120    0.379    0.000   66.876    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:40(fitnessMichalewicz)
+  2172720    0.320    0.000    0.320    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:546(_swapaxes_dispatcher)
+  2173020    0.294    0.000    0.294    0.000 {built-in method builtins.getattr}
+   362120    0.276    0.000   12.429    0.000 <__array_function__ internals>:177(split)
+   362120    0.231    0.000   11.014    0.000 <__array_function__ internals>:177(array_split)
+   182000    0.123    0.000    0.123    0.000 {method 'random' of 'numpy.random.mtrand.RandomState' objects}
+   362120    0.079    0.000    0.079    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\lib\shape_base.py:795(_split_dispatcher)
+   362120    0.079    0.000    0.079    0.000 {built-in method builtins.divmod}
+   118244    0.078    0.000    0.306    0.000 <__array_function__ internals>:177(concatenate)
+        1    0.065    0.065   90.491   90.491 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:240(ga)
+   362120    0.062    0.000    0.062    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\lib\shape_base.py:735(_array_split_dispatcher)
+   420000    0.051    0.000    0.051    0.000 {built-in method math.floor}
+   362120    0.040    0.000    0.040    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:177(<genexpr>)
+   242000    0.025    0.000    0.025    0.000 {method 'index' of 'list' objects}
+   118244    0.021    0.000    0.021    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\multiarray.py:148(concatenate)
+     2000    0.011    0.000    0.011    0.000 {built-in method builtins.sorted}
+    12000    0.009    0.000    0.374    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:46(<genexpr>)
+    12000    0.007    0.000    0.365    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:179(<genexpr>)
+     2000    0.007    0.000    0.007    0.000 {built-in method builtins.max}
+     2000    0.004    0.000    0.004    0.000 {method 'extend' of 'list' objects}
+     2000    0.002    0.000    0.380    0.000 D:\Projects\Grafuri\Repo-AG\src\Relief Fitness\main.py:45(De_Jong)
+      300    0.001    0.000    0.001    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+      300    0.001    0.000    0.002    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:69(_wrapreduction)
+      300    0.000    0.000    0.002    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:2927(prod)
+      300    0.000    0.000    0.002    0.000 <__array_function__ internals>:177(prod)
+      300    0.000    0.000    0.000    0.000 C:\Users\stefy\AppData\Local\Packages\PythonSoftwareFoundation.Python.3.10_qbz5n2kfra8p0\LocalCache\local-packages\Python310\site-packages\numpy\core\fromnumeric.py:70(<dictcomp>)
+
+
