@@ -3,9 +3,14 @@
 # select based on evaluate which chromosomes will reproduce
 # cross over the chromosomes
 # mutate with a very low probability
+import cProfile
+import pstats
+
 
 import numpy as np
-from numba import jit
+from numba import njit
+
+
 import math
 global_minim = 1000
 # generating the starting 
@@ -21,18 +26,27 @@ N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
 
 MUTATION_RATE  = 0.2
-CROSSOVER_RATE = 0.3
-POPULATION_SIZE = 100
-NO_GENERATIONS = 1000
+CROSSOVER_RATE = 0.4
+POPULATION_SIZE = 200
+NO_GENERATIONS = 2000
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-ELITISM_RATE = 20
+ELITISM_RATE = 25
 ELITE_POP_SIZE = math.floor((ELITISM_RATE/100)*POPULATION_SIZE)
+
+def fitnessSchwefel(arr):
+    suma  = sum(x  for x in arr) 
+    return pow(suma+13000, -4)
+
+def fitnessMichalewicz(arr):
+    suma = sum(x for x in arr)
+    return 1/float(pow(6, suma))
+
 
 def De_Jong(params):
    return sum(val**2 for val in params)
 
 def Rastrigin_Function(params):
-    return 10*len(params) + sum(i**2 - 10*math.cos(2*math.pi*i) for i in params)
+    return 10*len(params)+ sum(i**2 - 10*math.cos(2*math.pi*i) for i in params)
 
 def Schwefel_Function(params):
     return sum((-i)*math.sin(math.sqrt(abs(i))) for i in params)
@@ -48,7 +62,7 @@ def generate_chromosome(func_params, bit_count):
     return chromosome
 
 
-@jit(parallel=True)
+
 def generate_starting_pop(func_params, bit_count):
     population = []
     for i in range(0, POPULATION_SIZE):
@@ -64,16 +78,16 @@ def print_population(population):
 
 
 #@jit(parallel = True )
-def cross_over( funct_params: int, bit_count: int,new_gen:list):
+def cross_over( funct_params: int, bit_count: int,new_gen:list,elite_pop):
     
 
     # cross over after random  position
     
     new_pop = []    
-    for i in range(0,POPULATION_SIZE,2):
+    for i in range(0,POPULATION_SIZE - ELITE_POP_SIZE,2):
         #creating pop_size/2 parents and mating them
-        chrom1= new_gen[np.random.randint(1,POPULATION_SIZE)]
-        chrom2 = new_gen[np.random.randint(1,POPULATION_SIZE)]
+        chrom1= new_gen[np.random.randint(1,POPULATION_SIZE-ELITE_POP_SIZE)]
+        chrom2 = new_gen[np.random.randint(1,POPULATION_SIZE-ELITE_POP_SIZE)]
 
         #generate a random probabillity to cross over 
         
@@ -92,12 +106,12 @@ def cross_over( funct_params: int, bit_count: int,new_gen:list):
     # 10|110  11|1001
 
     #copy the elite individuals 
-    #new_pop.extend(elite_pop)
+    new_pop.extend(elite_pop)
     return new_pop
 
 
 #mutate with a proability 
-@jit(parallel = True)
+
 def mutate_gene(population,funct_params, bit_count):
     for i in range (0,NUMBER_OF_MUTATION):
         #generate a number between 1 and number of total genes 
@@ -118,18 +132,17 @@ def binatodeci(bitstring)->int:
 
 
 #Decode it so it fits into function interval 
-@jit(parallel = True)
+
 def decode(solution, a, b, no_of_bits)->float:
     return (a + binatodeci(solution)*(b-a)/(pow(2, no_of_bits)-1))
 
 
 
-# @jit(fastmath = True)
 def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
      fitness_population :list = []
     
      #max = None # best chrom
-     for chrom  in population:  
+     for chrom in population:  
         params_decode = []
         #params decoded into real values 
         match function_name.__name__:
@@ -141,17 +154,19 @@ def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
 
             case 'Rastrigin_Function':
                 params_decode = (decode(x,RASTRING_INTERV[0],RASTRING_INTERV[1],N_RAS) for x in  np.split(chrom,no_of_params))
-                #TODO fill with fitness function
+                fitness_population.append(1/function_name(list(params_decode)))
+                
                 
 
             case 'Schwefel_Function':
                 params_decode = (decode(x,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],N_SCHWEL) for x in  np.split(chrom,no_of_params))
-
+                fitness_population.append(fitnessSchwefel(params_decode))    
                
 
             case 'Michalewicz_Function':
                 params_decode = (decode(x,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],N_MICH) for x in  np.split(chrom,no_of_params))
-                
+                fitness_population.append(fitnessMichalewicz(params_decode))
+
                 
 
                 
@@ -199,7 +214,7 @@ def print_fitness(fitness_pop):
 #select using roulette-wheel
 def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
     probab = np.random.random(POPULATION_SIZE-ELITE_POP_SIZE)
-    pop_cumul[POPULATION_SIZE-1] =1
+    pop_cumul[POPULATION_SIZE-1-ELITE_POP_SIZE] =1
     #print(f'len of cumul is {len(pop_cumul)} and len of probab is {len(probab)}')
     #print(f'len cumul is {len(pop_cumul)}')
     new_gen = []
@@ -211,7 +226,7 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
                 break
             
        
-    new_gen.extend(elite_pop)
+    #new_gen.extend(elite_pop)
     #print(f'len new gen is {len(new_gen)}')
     return new_gen
     
@@ -219,18 +234,99 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
 
 
 
-if __name__ == "__main__":
-    start_population = generate_starting_pop(5,N_DEJON)
+#if __name__ == "__main__":
+global_minim = 1000
+def ga(function_name):
 
-    for i in range(0,NO_GENERATIONS):
-        eval_fit = evaluate_fitness(start_population,5,N_DEJON,De_Jong)
-        if  eval_fit[2] < global_minim:
-            global_minim = eval_fit[2]
-        
-        new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
-        new_pop = cross_over(5,N_DEJON,new_gen) 
+    match function_name.__name__:
 
-        mutate_gene(new_pop,5,N_DEJON)
-        start_population = new_gen
-    print(global_minim)
-    
+        case 'De_Jong':
+            start_population = generate_starting_pop(5,N_DEJON)
+
+            global_minim = 1000
+
+            for i in range(0,NO_GENERATIONS):
+                print(f'generation no : {i}',end='\n')
+                eval_fit = evaluate_fitness(start_population,5,N_DEJON,De_Jong)
+                if  eval_fit[2] < global_minim:
+                    global_minim = eval_fit[2]
+                    print(f'new minim is {global_minim}')
+                
+                new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
+                new_pop = cross_over(5,N_DEJON,new_gen) 
+
+                mutate_gene(new_pop,5,N_DEJON)
+                start_population = new_gen
+            print(global_minim)
+                
+            
+        case 'Rastrigin_Function':
+            
+            start_population = generate_starting_pop(5,N_RAS)
+
+            global_minim = 1000
+            
+            for i in range(0,NO_GENERATIONS):
+                print(f'generation no : {i}',end='\n')
+                eval_fit = evaluate_fitness(start_population,5,N_RAS,function_name)
+                if  eval_fit[2] < global_minim:
+                    global_minim = eval_fit[2]
+                    print(f'new minim is {global_minim}')
+                
+                new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
+                new_pop = cross_over(5,N_RAS,new_gen,eval_fit[3]) 
+
+                mutate_gene(new_pop,5,N_RAS)
+                start_population = new_gen
+            print(global_minim)
+                
+
+        case 'Schwefel_Function':   
+                
+            start_population = generate_starting_pop(5,N_SCHWEL)
+
+            global_minim = 1000
+            
+            for i in range(0,NO_GENERATIONS):
+                print(f'generation no : {i}',end='\n')
+                eval_fit = evaluate_fitness(start_population,5,N_SCHWEL,function_name)
+                if  eval_fit[2] < global_minim:
+                    global_minim = eval_fit[2]
+                    print(f'new minim is {global_minim}')
+                
+                new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
+                new_pop = cross_over(5,N_SCHWEL,new_gen) 
+
+                mutate_gene(new_pop,5,N_SCHWEL)
+                start_population = new_gen
+            print(global_minim)
+                
+            
+
+        case 'Michalewicz_Function':
+            start_population = generate_starting_pop(5,N_MICH)
+
+            global_minim = 1000
+            
+            for i in range(0,NO_GENERATIONS):
+                print(f'generation no : {i}',end='\n')
+                eval_fit = evaluate_fitness(start_population,5,N_MICH,function_name)
+                if  eval_fit[2] < global_minim:
+                    global_minim = eval_fit[2]
+                    print(f'new minim is {global_minim}')
+                
+                new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
+                new_pop = cross_over(5,N_MICH,new_gen) 
+
+                mutate_gene(new_pop,5,N_MICH)
+                start_population = new_gen
+            print(global_minim)
+            
+#ga(Rastrigin_Function)
+cProfile.run('ga(Rastrigin_Function)','res_file', sort= True)
+file = open('formatted_profile.txt', 'w')
+profile = pstats.Stats('./res_file', stream=file)
+profile.sort_stats('time')
+profile.print_stats(50)
+file.close()
+
