@@ -24,22 +24,21 @@ N_DEJON = math.trunc(math.log2((DEJON_INTERV[1]- DEJON_INTERV[0])*pow(10,PRECISI
 N_RAS = math.trunc(math.log2((RASTRING_INTERV[1]-RASTRING_INTERV[0])*pow(10,PRECISION)))
 N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(10,PRECISION)))
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
-
 MUTATION_RATE  = 0.7
-CROSSOVER_RATE = 0.3
+CROSSOVER_RATE = 0.2
 POPULATION_SIZE = 300
 NO_GENERATIONS = 2000
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-ELITISM_RATE = 40
+ELITISM_RATE = 30
 ELITE_POP_SIZE = math.floor((ELITISM_RATE/100)*POPULATION_SIZE)
 
 def fitnessSchwefel(arr):
     suma  = sum(x  for x in arr) 
-    return pow(suma+13000, -4)
+    return pow(suma+10000, -1)
 
 def fitnessMichalewicz(arr):
     suma = sum(x for x in arr)
-    return 1/float(pow(6, suma))
+    return 1/suma
 
 
 def De_Jong(params):
@@ -141,8 +140,9 @@ def decode(solution, a, b, no_of_bits)->float:
 
 def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
      fitness_population :list = []
-    
+     
      #max = None # best chrom
+
      for chrom in population:  
         params_decode = []
         #params decoded into real values 
@@ -150,8 +150,8 @@ def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
             case 'De_Jong':
                 
                 params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],3) for x in  np.split(chrom,no_of_params*no_of_bits))
-                fitness_population.append(1/function_name(params_decode))
-                
+                fitness_population.append(1/function_name(list(params_decode)))
+                   
 
             case 'Rastrigin_Function':
                 params_decode = (decode(x,RASTRING_INTERV[0],RASTRING_INTERV[1],N_RAS) for x in  np.split(chrom,no_of_params))
@@ -161,12 +161,12 @@ def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
 
             case 'Schwefel_Function':
                 params_decode = (decode(x,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],N_SCHWEL) for x in  np.split(chrom,no_of_params))
-                fitness_population.append(fitnessSchwefel(params_decode))    
+                fitness_population.append(fitnessSchwefel(list(params_decode)))    
                
 
             case 'Michalewicz_Function':
                 params_decode = (decode(x,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],N_MICH) for x in  np.split(chrom,no_of_params))
-                fitness_population.append(fitnessMichalewicz(params_decode))
+                fitness_population.append(fitnessMichalewicz(list(params_decode)))
 
                 
 
@@ -176,13 +176,22 @@ def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
         
      total = sum(x for x in fitness_population)
      #print(fitness_population.index(max(fitness_population)))
-     params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))
-     value = De_Jong(params_decode)
-     global_minim = 1000
-     if value < global_minim: 
-       global_minim = value 
-    # print(f'best result is {value}',end= '\n')
-   
+     match function_name.__name__:
+            case 'De_Jong':
+                params_decode = (decode(x,DEJON_INTERV[0],DEJON_INTERV[1],N_DEJON) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))    
+            case 'Rastrigin_Function':
+                params_decode = (decode(x,RASTRING_INTERV[0],RASTRING_INTERV[1],N_RAS) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))
+            case 'Schwefel_Function':
+                params_decode = (decode(x,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],N_SCHWEL) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))    
+            case 'Michalewicz_Function':
+                params_decode = (decode(x,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],N_MICH) for x in  np.split(population[fitness_population.index(max(fitness_population))],5))
+                
+     value = function_name(list(params_decode))
+    #  global_minim = 1000
+    #  if value < global_minim: 
+    #    global_minim = value 
+    #    print(f'best result is {value}',end= '\n')
+     
      fitness_final = [] #probability for each chrom to be selected 
 
 
@@ -215,7 +224,7 @@ def print_fitness(fitness_pop):
 #select using roulette-wheel
 def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
     probab = np.random.random(POPULATION_SIZE-ELITE_POP_SIZE)
-    pop_cumul[POPULATION_SIZE-1-ELITE_POP_SIZE] =1
+    pop_cumul[POPULATION_SIZE-1-ELITE_POP_SIZE] = 1
     #print(f'len of cumul is {len(pop_cumul)} and len of probab is {len(probab)}')
     #print(f'len cumul is {len(pop_cumul)}')
     new_gen = []
@@ -230,10 +239,6 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
     #new_gen.extend(elite_pop)
     #print(f'len new gen is {len(new_gen)}')
     return new_gen
-    
-
-
-
 
 #if __name__ == "__main__":
 global_minim = 1000
@@ -257,14 +262,18 @@ def ga(function_name):
                 else :
                     not_found+=1
 
-                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                if not_found == 20 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
                     CROSSOVER_RATE *= 1.1
-                    MUTATION_RATE *= 0.1
+                    MUTATION_RATE *= 0.9
+                    print(CROSSOVER_RATE)
+                    print(MUTATION_RATE)
                     not_found = 0
+
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
                 new_pop = cross_over(5,N_DEJON,new_gen,eval_fit[3]) 
 
                 mutate_gene(new_pop,5,N_DEJON)
+
                 start_population = new_gen
             print(global_minim)
                 
@@ -284,10 +293,13 @@ def ga(function_name):
                 else :
                     not_found+=1
 
-                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                if not_found == 20 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
                     CROSSOVER_RATE *= 1.1
-                    MUTATION_RATE *= 0.1
+                    MUTATION_RATE *= 0.9
+                    print(CROSSOVER_RATE)
+                    print(MUTATION_RATE)
                     not_found = 0
+
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
                 new_pop = cross_over(5,N_RAS,new_gen,eval_fit[3]) 
 
@@ -311,9 +323,11 @@ def ga(function_name):
                 else :
                     not_found+=1
 
-                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                if not_found == 20 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
                     CROSSOVER_RATE *= 1.1
-                    MUTATION_RATE *= 0.1
+                    MUTATION_RATE *= 0.9
+                    print(CROSSOVER_RATE)
+                    print(MUTATION_RATE)
                     not_found = 0
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
                 new_pop = cross_over(5,N_SCHWEL,new_gen,eval_fit[3]) 
@@ -340,9 +354,11 @@ def ga(function_name):
                 else :
                     not_found+=1
 
-                if not_found == 100 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
+                if not_found == 20 and MUTATION_RATE >0.1 and CROSSOVER_RATE < 1 :
                     CROSSOVER_RATE *= 1.1
-                    MUTATION_RATE *= 0.1
+                    MUTATION_RATE *= 0.9
+                    print(CROSSOVER_RATE)
+                    print(MUTATION_RATE)
                     not_found = 0
                     #print("modified!!!!!!")
                 new_gen = select_chromosome(eval_fit[1],start_population,eval_fit[3])
