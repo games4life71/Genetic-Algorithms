@@ -10,6 +10,9 @@ import pstats
 import numpy as np
 from numba import njit
 
+import time
+
+
 
 import math
 global_minim = 1000
@@ -26,10 +29,10 @@ N_MICH = math.trunc(math.log2((MICHALEWICZ_INTERV[1]-MICHALEWICZ_INTERV[0])*pow(
 N_SCHWEL = math.trunc(math.log2((SCHWEFEL_INTERV[1]-SCHWEFEL_INTERV[0])*pow(10,PRECISION)))
 MUTATION_RATE  = 0.7
 CROSSOVER_RATE = 0.2
-POPULATION_SIZE = 100
-NO_GENERATIONS = 2000
+POPULATION_SIZE = 200
+NO_GENERATIONS = 20
 NUMBER_OF_MUTATION = math.floor(MUTATION_RATE *POPULATION_SIZE)
-ELITISM_RATE = 15
+ELITISM_RATE = 5
 ELITE_POP_SIZE = math.floor((ELITISM_RATE/100)*POPULATION_SIZE)
 
 def fitnessSchwefel(arr):
@@ -161,7 +164,7 @@ def evaluate_fitness(population:list ,no_of_params,no_of_bits,function_name):
             case 'Schwefel_Function':
                 params_decode = (decode(x,SCHWEFEL_INTERV[0],SCHWEFEL_INTERV[1],N_SCHWEL) for x in  np.split(chrom,no_of_params))
                 fitness_population.append(1/function_name(list(params_decode)))    
-               
+
 
             case 'Michalewicz_Function':
                 params_decode = (decode(x,MICHALEWICZ_INTERV[0],MICHALEWICZ_INTERV[1],N_MICH) for x in  np.split(chrom,no_of_params))
@@ -243,7 +246,8 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
 global_minim = 1000
 
 def ga(function_name):
-    no_params = 10
+    start_time = time.time()
+    no_params = 5
     global CROSSOVER_RATE
     global MUTATION_RATE
     not_found = 0  
@@ -275,8 +279,7 @@ def ga(function_name):
                 mutate_gene(new_pop,no_params,N_DEJON)
 
                 start_population = new_gen
-            print(global_minim)
-                
+            
             
         case 'Rastrigin_Function':
             
@@ -367,12 +370,23 @@ def ga(function_name):
                 mutate_gene(new_pop,no_params,N_MICH)
                 start_population = new_gen
             print(global_minim)
-            
+    total_time = time.time() - start_time
+    print(f'results is {global_minim} in {total_time} seconds')
+    return (global_minim,total_time)
+    
 #ga(Rastrigin_Function)
-cProfile.run('ga(Michalewicz_Function)','res_file', sort= True)
-file = open('formatted_profile.txt', 'w')
-profile = pstats.Stats('./res_file', stream=file)
-profile.sort_stats('time')
-profile.print_stats(50)
-file.close()
+with open("schef_res.txt",'w') as file:
 
+ for i in range (0,6):
+    #cProfile.run('ga(Schwefel_Function)','res_file', sort= True)
+    #file = open('formatted_profile.txt', 'w')
+    #profile = pstats.Stats('./res_file', stream=file)
+    #profile.sort_stats('time')
+    #profile.print_stats(50)
+    #file.close()
+   results =  ga(Schwefel_Function)
+   file.write(str(results[0]))
+   file.write(str(results[1]))
+   file.write('\n')
+   
+   
