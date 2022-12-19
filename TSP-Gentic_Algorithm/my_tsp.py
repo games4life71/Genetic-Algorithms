@@ -23,25 +23,24 @@ size = len(locations)
 #             distances.append(distance)
 # print(distances)
 
-class City:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
+# class City:
+#     def __init__(self, x, y):
+#         self.x = x
+#         self.y = y
     
-    def distance(self, city):
-        xDis = abs(self.x - city.x)
-        yDis = abs(self.y - city.y)
-        distance = np.sqrt((xDis ** 2) + (yDis ** 2))
-        return distance
+#     def distance(self, city):
+#         xDis = abs(self.x - city.x)
+#         yDis = abs(self.y - city.y)
+#         distance = np.sqrt((xDis ** 2) + (yDis ** 2))
+#         return distance
     
-    def __repr__(self):
-        return "(" + str(self.x) + "," + str(self.y) + ")"
+#     def __repr__(self):
+#         return "(" + str(self.x) + "," + str(self.y) + ")"
 
-cityList = []
+# cityList = []
 
-for city in locations:
-    cityList.append(City(city[0], city[1]))
+# for city in locations:
+#     cityList.append(City(city[0], city[1]))
 
-for i in range(0, size):
-    print(cityList[0].distance(cityList[i]))
-# ;a;a;a;a
+# for i in range(0, size):
+#     print(cityList[0].distance(cityList[i]))
