@@ -245,9 +245,9 @@ def select_chromosome(pop_cumul:list,population:list,elite_pop:list):
 #if __name__ == "__main__":
 global_minim = 1000
 
-def ga(function_name):
+def ga(function_name,no_params):
     start_time = time.time()
-    no_params = 5
+    
     global CROSSOVER_RATE
     global MUTATION_RATE
     not_found = 0  
@@ -384,9 +384,23 @@ with open("schef_res.txt",'w') as file:
     #profile.sort_stats('time')
     #profile.print_stats(50)
     #file.close()
-   results =  ga(Schwefel_Function)
+
+   results =  ga(Schwefel_Function,5)
    file.write(str(results[0]))
    file.write(str(results[1]))
    file.write('\n')
+
    
+   results =  ga(Schwefel_Function,10)
+   file.write(str(results[0]))
+   file.write(str(results[1]))
+   file.write('\n')
+
    
+   results =  ga(Schwefel_Function,30)
+   file.write(str(results[0]))
+   file.write(str(results[1]))
+   file.write('\n')
+
+   file.write('\n')
+
