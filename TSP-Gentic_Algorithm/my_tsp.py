@@ -44,3 +44,4 @@ for city in locations:
 
 for i in range(0, size):
     print(cityList[0].distance(cityList[i]))
+# ;a;a;a;a
