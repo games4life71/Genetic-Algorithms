@@ -33,23 +33,21 @@ def distance_two_points(city1, city2):
     distance = np.sqrt((xDis ** 2) + (yDis ** 2))
     return distance
 
-#make sure the distance is correct
-# def test_distance():
-#     cities_dict = parse_file("bays29.txt")
-#     for i in range(1, len(cities_dict)):
-#         for j in range(i+1, len(cities_dict)):
-#             distance = distance_two_points(cities_dict[str(i)], cities_dict[str(j)])          
-#     print(distance)
-# test_distance()
 
+def print_dict(dict):
+    for key, value in dict.items():
+        print(key, value)
 
 #get distance of a path
-def get_distance(cities_dict):
-    distance = 0.0
-    for i in range(1, len(cities_dict)):
-       for j in range(i+1, len(cities_dict)):
-            distance = distance + distance_two_points(cities_dict[str(i)], cities_dict[str(j)]) 
-    return distance
+def get_distance(route):
+    d = 0.0  # total distance between cities
+    n = len(route)
+    for i in range(n-1):
+        if route[i] < route[i+1]:
+            d += (route[i+1] - route[i]) * 1.0
+        else:
+            d += (route[i] - route[i+1]) * 1.5
+    return d
 
 #error function for the distance
 def error_function(cities_dict):
@@ -96,6 +94,7 @@ def simulated_annealing(cities_dict, temperature, alpha, max_iterations):
         #decrease the temperature
         temperature *= alpha
         iteration += 1
+        print("Iteration: ", iteration, " Error: ", err, " Temperature: ", temperature)
     #display the final solution
     print("Final solution: ", soln)
 
