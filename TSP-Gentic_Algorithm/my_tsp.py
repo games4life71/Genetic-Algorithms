@@ -1,12 +1,17 @@
 #TODO simulade annealing for TSP
 
 import numpy as np
+import time
+
+start_time = time.time()
+f=open("output.txt", "a")
+
 
 # parse the file and return a dict with the cities and their coordinates
 def parse_file(file_name):
     locations = []
     cities_id = []
-    with open("bays29.txt", 'r') as fp:
+    with open(file_name, 'r') as fp:
         # read all lines in a list
         lines = fp.readlines()
         for line, content in enumerate(lines):
@@ -39,14 +44,13 @@ def print_dict(dict):
         print(key, value)
 
 #get distance of a path
-def get_distance(route):
+def get_distance(route, cities_dict):
     d = 0.0  # total distance between cities
-    n = len(route)
-    for i in range(n-1):
-        if route[i] < route[i+1]:
-            d += (route[i+1] - route[i]) * 1.0
-        else:
-            d += (route[i] - route[i+1]) * 1.5
+    n = len(cities_dict)
+    #print(cities_dict)
+    d += distance_two_points(cities_dict[str(route[0])], cities_dict[str(route[n-1])])
+    for i in range(n-1): 
+        d += distance_two_points(cities_dict[str(route[i])], cities_dict[str(route[i+1])])
     return d
 
 #error function for the distance
@@ -65,15 +69,18 @@ def new_path(cities_dict):
     return new_cities_dict
 
 #simulated annealing
-def simulated_annealing(cities_dict, temperature, alpha, max_iterations):
+def simulated_annealing(file_name, cities_dict, temperature, alpha, max_iterations):
     #make a random path
-    soln = np.arange(len(cities_dict))
+    soln = np.arange(1,len(cities_dict)+1)
+    print(soln)
     #shuffle the path
     np.random.shuffle(soln)
     #displat the initial solution
     print("Initial solution: ", soln)
+    print("Initial distance: ", get_distance(soln, cities_dict))
+    get_distance(soln, cities_dict)
     #compute the error
-    err = error_function(soln)
+    err = get_distance(soln, cities_dict)
     #keep track of the number of iterations
     iteration = 0
     #loop until the temperature is low or the max number of iterations is reached
@@ -81,9 +88,9 @@ def simulated_annealing(cities_dict, temperature, alpha, max_iterations):
         #get a new solution
         new_soln = new_path(soln)
         #compute the error
-        new_err = error_function(new_soln)
+        new_err = get_distance(new_soln, cities_dict)
         #check if the new solution is better
-        if new_err < err: #`new solution is better, accept it
+        if new_err < err: #new solution is better, accept it
             soln = new_soln
             err = new_err
         else: #new solution is worse, accept it with a probability
@@ -97,11 +104,14 @@ def simulated_annealing(cities_dict, temperature, alpha, max_iterations):
         print("Iteration: ", iteration, " Error: ", err, " Temperature: ", temperature)
     #display the final solution
     print("Final solution: ", soln)
+    print("Total distance: ", get_distance(soln, cities_dict))
+    # f.write(f'File name : {file_name} \n Final solution : {soln} \n Total distance : {get_distance(soln, cities_dict)} \n Time : {(time.time() - start_time)} seconds \n')
+
 
 #main function
-def main():
+def main(file_name):
     #get the cities and their coordinates
-    cities_dict = parse_file("bays29.txt")
+    cities_dict = parse_file(file_name)
     #set the initial temperature
     temperature = 100
     #set the cooling rate
@@ -109,6 +119,8 @@ def main():
     #set the max number of iterations
     max_iterations = 10
     #run the simulated annealing algorithm
-    simulated_annealing(cities_dict, temperature, alpha, max_iterations)
+    simulated_annealing(file_name, cities_dict, temperature, alpha, max_iterations)
+    #close the file
+    f.close()
 
-main()
+main("bays29.txt")

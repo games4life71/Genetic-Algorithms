@@ -1,0 +1,11 @@
+File name : bays29.txt 
+ Final solution : [24 22 18  1 19 25 26  3  5  9 14 13 21 15  4 10  7 11 16 27 29 17  8 20
+ 23  6 12  2 28] 
+ Total distance : 23771.991264878205 
+ Time : 0.05416536331176758 seconds 
+ 
+File name : bays29.txt 
+ Final solution : [12  1 25  6 21 26  3 27  5  9  4 29 19 28 15 13 14 16 10 17 24  2 20 23
+  8  7 22 11 18] 
+ Total distance : 24680.679008783613 
+ Time : 0.008013725280761719 seconds 
