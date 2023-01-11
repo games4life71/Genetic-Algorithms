@@ -113,11 +113,11 @@ def main(file_name):
     #get the cities and their coordinates
     cities_dict = parse_file(file_name)
     #set the initial temperature
-    temperature = 100
+    temperature = 1000
     #set the cooling rate
     alpha = 0.95
     #set the max number of iterations
-    max_iterations = 10
+    max_iterations = 100000
     #run the simulated annealing algorithm
     simulated_annealing(file_name, cities_dict, temperature, alpha, max_iterations)
     #close the file
