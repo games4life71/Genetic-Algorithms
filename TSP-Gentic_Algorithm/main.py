@@ -2,11 +2,13 @@
 
 import numpy as np
 
+MUTATE_RATE = 0.1
+NO_OF_GENERATIONS = 300
 
 def parse_file(file_name):
     locations = []
     cities_id = []
-    with open("bays29.txt", 'r') as fp:
+    with open("bays29.txt", 'r') as fp: #parse the file
         # read all lines in a list
         lines = fp.readlines()
         for line, content in enumerate(lines):
@@ -185,10 +187,37 @@ def mutate(population, mutation_rate):
 #     return new_population
 
 #print(fitness_population(init_pop, cities_dict))
-fitness_pop = fitness_population(init_pop, cities_dict)
-parents = selection(init_pop, fitness_pop)
-#print(parents)
-#print(cross_over = cross_over(parents[0][0], parents[1][0]))
-new_pop = cross_over(parents[0], parents[1])
-print(new_pop)
+def get_best_fitness(population, cities_dict):
+    fitness_pop = fitness_population(population, cities_dict)
+    best_fitness = np.max(fitness_pop)
+    best_individual = population[np.argmax(fitness_pop)]
+    return (best_fitness, best_individual)
+
+if __name__ == '__main__':
+    # generate the initial population
+    init_pop = generate_initial_population(cities_dict, 4)
+    # calculate the fitness of the initial population
+    best_fitness = []
+    best_individual = []
+    for i in range(NO_OF_GENERATIONS):
+        fitness_pop = fitness_population(init_pop, cities_dict)
+        # select the best individuals
+        parents = selection(init_pop, fitness_pop)
+        #print(parents)
+        #print(cross_over = cross_over(parents[0][0], parents[1][0]))
+
+        new_pop = cross_over(parents[0], parents[1])
+        #mutate the population 
+        new_pop = mutate(new_pop, MUTATE_RATE)
+        #print(new_pop)
+        best_candidate = get_best_fitness(new_pop, cities_dict)
+        if eval(best_candidate[0]) > eval(best_fitness):
+            best_fitness = best_candidate[0]
+            best_individual = best_candidate[1]
+        
+        print(f'Best fitness: {best_fitness}')
+        print(f'Best individual: {best_individual}')
+        init_pop = new_pop
+        #get the results
+
 
