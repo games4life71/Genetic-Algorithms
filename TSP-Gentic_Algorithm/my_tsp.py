@@ -103,9 +103,9 @@ def simulated_annealing(file_name, cities_dict, temperature, alpha, max_iteratio
         iteration += 1
         print("Iteration: ", iteration, " Error: ", err, " Temperature: ", temperature)
     #display the final solution
-    print("Final solution: ", soln)
-    print("Total distance: ", get_distance(soln, cities_dict))
-    # f.write(f'File name : {file_name} \n Final solution : {soln} \n Total distance : {get_distance(soln, cities_dict)} \n Time : {(time.time() - start_time)} seconds \n')
+    # print("Final solution: ", soln)
+    # print("Total distance: ", get_distance(soln, cities_dict))
+    f.write(f'File name : {file_name} \n Final solution : {soln} \n Total distance : {get_distance(soln, cities_dict)} \n Time : {(time.time() - start_time)} seconds \n')
 
 
 #main function
